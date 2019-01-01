@@ -20,3 +20,8 @@ Makefile
 test/fixtures/grammars/*
 !test/fixtures/grammars/.gitkeep
 externals/cpplint.py
+
+# Visual Studio
+.vs
+bin
+obj
