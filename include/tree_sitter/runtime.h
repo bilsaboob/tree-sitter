@@ -12,6 +12,10 @@ extern "C" {
 
 #define TREE_SITTER_LANGUAGE_VERSION 9
 
+#ifndef TREE_SITTER_EXPORT
+  #define TREE_SITTER_EXPORT __declspec(dllexport)
+#endif
+
 typedef uint16_t TSSymbol;
 typedef struct TSLanguage TSLanguage;
 typedef struct TSParser TSParser;
@@ -77,77 +81,77 @@ typedef struct {
   uint32_t context[2];
 } TSTreeCursor;
 
-TSParser *ts_parser_new();
-void ts_parser_delete(TSParser *);
-const TSLanguage *ts_parser_language(const TSParser *);
-bool ts_parser_set_language(TSParser *, const TSLanguage *);
-TSLogger ts_parser_logger(const TSParser *);
-void ts_parser_set_logger(TSParser *, TSLogger);
-void ts_parser_print_dot_graphs(TSParser *, FILE *);
-void ts_parser_halt_on_error(TSParser *, bool);
-TSTree *ts_parser_parse(TSParser *, const TSTree *, TSInput);
-TSTree *ts_parser_parse_string(TSParser *, const TSTree *, const char *, uint32_t);
-TSTree *ts_parser_parse_string_encoding(TSParser *, const TSTree *, const char *, uint32_t, TSInputEncoding);
-bool ts_parser_enabled(const TSParser *);
-void ts_parser_set_enabled(TSParser *, bool);
-size_t ts_parser_operation_limit(const TSParser *);
-void ts_parser_set_operation_limit(TSParser *, size_t);
-void ts_parser_reset(TSParser *);
-void ts_parser_set_included_ranges(TSParser *, const TSRange *, uint32_t);
-const TSRange *ts_parser_included_ranges(const TSParser *, uint32_t *);
+TREE_SITTER_EXPORT TSParser *ts_parser_new();
+TREE_SITTER_EXPORT void ts_parser_delete(TSParser *);
+TREE_SITTER_EXPORT const TSLanguage *ts_parser_language(const TSParser *);
+TREE_SITTER_EXPORT bool ts_parser_set_language(TSParser *, const TSLanguage *);
+TREE_SITTER_EXPORT TSLogger ts_parser_logger(const TSParser *);
+TREE_SITTER_EXPORT void ts_parser_set_logger(TSParser *, TSLogger);
+TREE_SITTER_EXPORT void ts_parser_print_dot_graphs(TSParser *, FILE *);
+TREE_SITTER_EXPORT void ts_parser_halt_on_error(TSParser *, bool);
+TREE_SITTER_EXPORT TSTree *ts_parser_parse(TSParser *, const TSTree *, TSInput);
+TREE_SITTER_EXPORT TSTree *ts_parser_parse_string(TSParser *, const TSTree *, const char *, uint32_t);
+TREE_SITTER_EXPORT TSTree *ts_parser_parse_string_encoding(TSParser *, const TSTree *, const char *, uint32_t, TSInputEncoding);
+TREE_SITTER_EXPORT bool ts_parser_enabled(const TSParser *);
+TREE_SITTER_EXPORT void ts_parser_set_enabled(TSParser *, bool);
+TREE_SITTER_EXPORT size_t ts_parser_operation_limit(const TSParser *);
+TREE_SITTER_EXPORT void ts_parser_set_operation_limit(TSParser *, size_t);
+TREE_SITTER_EXPORT void ts_parser_reset(TSParser *);
+TREE_SITTER_EXPORT void ts_parser_set_included_ranges(TSParser *, const TSRange *, uint32_t);
+TREE_SITTER_EXPORT const TSRange *ts_parser_included_ranges(const TSParser *, uint32_t *);
 
-TSTree *ts_tree_copy(const TSTree *);
-void ts_tree_delete(TSTree *);
-TSNode ts_tree_root_node(const TSTree *);
-void ts_tree_edit(TSTree *, const TSInputEdit *);
-TSRange *ts_tree_get_changed_ranges(const TSTree *, const TSTree *, uint32_t *);
-void ts_tree_print_dot_graph(const TSTree *, FILE *);
-const TSLanguage *ts_tree_language(const TSTree *);
+TREE_SITTER_EXPORT TSTree *ts_tree_copy(const TSTree *);
+TREE_SITTER_EXPORT void ts_tree_delete(TSTree *);
+TREE_SITTER_EXPORT TSNode ts_tree_root_node(const TSTree *);
+TREE_SITTER_EXPORT void ts_tree_edit(TSTree *, const TSInputEdit *);
+TREE_SITTER_EXPORT TSRange *ts_tree_get_changed_ranges(const TSTree *, const TSTree *, uint32_t *);
+TREE_SITTER_EXPORT void ts_tree_print_dot_graph(const TSTree *, FILE *);
+TREE_SITTER_EXPORT const TSLanguage *ts_tree_language(const TSTree *);
 
-uint32_t ts_node_start_byte(TSNode);
-TSPoint ts_node_start_point(TSNode);
-uint32_t ts_node_end_byte(TSNode);
-TSPoint ts_node_end_point(TSNode);
-TSSymbol ts_node_symbol(TSNode);
-const char *ts_node_type(TSNode);
-char *ts_node_string(TSNode);
-bool ts_node_eq(TSNode, TSNode);
-bool ts_node_is_null(TSNode);
-bool ts_node_is_named(TSNode);
-bool ts_node_is_missing(TSNode);
-bool ts_node_has_changes(TSNode);
-bool ts_node_has_error(TSNode);
-TSNode ts_node_parent(TSNode);
-TSNode ts_node_child(TSNode, uint32_t);
-TSNode ts_node_named_child(TSNode, uint32_t);
-uint32_t ts_node_child_count(TSNode);
-uint32_t ts_node_named_child_count(TSNode);
-TSNode ts_node_next_sibling(TSNode);
-TSNode ts_node_next_named_sibling(TSNode);
-TSNode ts_node_prev_sibling(TSNode);
-TSNode ts_node_prev_named_sibling(TSNode);
-TSNode ts_node_first_child_for_byte(TSNode, uint32_t);
-TSNode ts_node_first_named_child_for_byte(TSNode, uint32_t);
-TSNode ts_node_descendant_for_byte_range(TSNode, uint32_t, uint32_t);
-TSNode ts_node_named_descendant_for_byte_range(TSNode, uint32_t, uint32_t);
-TSNode ts_node_descendant_for_point_range(TSNode, TSPoint, TSPoint);
-TSNode ts_node_named_descendant_for_point_range(TSNode, TSPoint, TSPoint);
-void ts_node_edit(TSNode *, const TSInputEdit *);
+TREE_SITTER_EXPORT uint32_t ts_node_start_byte(TSNode);
+TREE_SITTER_EXPORT TSPoint ts_node_start_point(TSNode);
+TREE_SITTER_EXPORT uint32_t ts_node_end_byte(TSNode);
+TREE_SITTER_EXPORT TSPoint ts_node_end_point(TSNode);
+TREE_SITTER_EXPORT TSSymbol ts_node_symbol(TSNode);
+TREE_SITTER_EXPORT const char *ts_node_type(TSNode);
+TREE_SITTER_EXPORT char *ts_node_string(TSNode);
+TREE_SITTER_EXPORT bool ts_node_eq(TSNode, TSNode);
+TREE_SITTER_EXPORT bool ts_node_is_null(TSNode);
+TREE_SITTER_EXPORT bool ts_node_is_named(TSNode);
+TREE_SITTER_EXPORT bool ts_node_is_missing(TSNode);
+TREE_SITTER_EXPORT bool ts_node_has_changes(TSNode);
+TREE_SITTER_EXPORT bool ts_node_has_error(TSNode);
+TREE_SITTER_EXPORT TSNode ts_node_parent(TSNode);
+TREE_SITTER_EXPORT TSNode ts_node_child(TSNode, uint32_t);
+TREE_SITTER_EXPORT TSNode ts_node_named_child(TSNode, uint32_t);
+TREE_SITTER_EXPORT uint32_t ts_node_child_count(TSNode);
+TREE_SITTER_EXPORT uint32_t ts_node_named_child_count(TSNode);
+TREE_SITTER_EXPORT TSNode ts_node_next_sibling(TSNode);
+TREE_SITTER_EXPORT TSNode ts_node_next_named_sibling(TSNode);
+TREE_SITTER_EXPORT TSNode ts_node_prev_sibling(TSNode);
+TREE_SITTER_EXPORT TSNode ts_node_prev_named_sibling(TSNode);
+TREE_SITTER_EXPORT TSNode ts_node_first_child_for_byte(TSNode, uint32_t);
+TREE_SITTER_EXPORT TSNode ts_node_first_named_child_for_byte(TSNode, uint32_t);
+TREE_SITTER_EXPORT TSNode ts_node_descendant_for_byte_range(TSNode, uint32_t, uint32_t);
+TREE_SITTER_EXPORT TSNode ts_node_named_descendant_for_byte_range(TSNode, uint32_t, uint32_t);
+TREE_SITTER_EXPORT TSNode ts_node_descendant_for_point_range(TSNode, TSPoint, TSPoint);
+TREE_SITTER_EXPORT TSNode ts_node_named_descendant_for_point_range(TSNode, TSPoint, TSPoint);
+TREE_SITTER_EXPORT void ts_node_edit(TSNode *, const TSInputEdit *);
 
-TSTreeCursor ts_tree_cursor_new(TSNode);
-void ts_tree_cursor_delete(TSTreeCursor *);
-void ts_tree_cursor_reset(TSTreeCursor *, TSNode);
-TSNode ts_tree_cursor_current_node(const TSTreeCursor *);
-bool ts_tree_cursor_goto_parent(TSTreeCursor *);
-bool ts_tree_cursor_goto_next_sibling(TSTreeCursor *);
-bool ts_tree_cursor_goto_first_child(TSTreeCursor *);
-int64_t ts_tree_cursor_goto_first_child_for_byte(TSTreeCursor *, uint32_t);
+TREE_SITTER_EXPORT TSTreeCursor ts_tree_cursor_new(TSNode);
+TREE_SITTER_EXPORT void ts_tree_cursor_delete(TSTreeCursor *);
+TREE_SITTER_EXPORT void ts_tree_cursor_reset(TSTreeCursor *, TSNode);
+TREE_SITTER_EXPORT TSNode ts_tree_cursor_current_node(const TSTreeCursor *);
+TREE_SITTER_EXPORT bool ts_tree_cursor_goto_parent(TSTreeCursor *);
+TREE_SITTER_EXPORT bool ts_tree_cursor_goto_next_sibling(TSTreeCursor *);
+TREE_SITTER_EXPORT bool ts_tree_cursor_goto_first_child(TSTreeCursor *);
+TREE_SITTER_EXPORT int64_t ts_tree_cursor_goto_first_child_for_byte(TSTreeCursor *, uint32_t);
 
-uint32_t ts_language_symbol_count(const TSLanguage *);
-const char *ts_language_symbol_name(const TSLanguage *, TSSymbol);
-TSSymbol ts_language_symbol_for_name(const TSLanguage *, const char *);
-TSSymbolType ts_language_symbol_type(const TSLanguage *, TSSymbol);
-uint32_t ts_language_version(const TSLanguage *);
+TREE_SITTER_EXPORT uint32_t ts_language_symbol_count(const TSLanguage *);
+TREE_SITTER_EXPORT const char *ts_language_symbol_name(const TSLanguage *, TSSymbol);
+TREE_SITTER_EXPORT TSSymbol ts_language_symbol_for_name(const TSLanguage *, const char *);
+TREE_SITTER_EXPORT TSSymbolType ts_language_symbol_type(const TSLanguage *, TSSymbol);
+TREE_SITTER_EXPORT uint32_t ts_language_version(const TSLanguage *);
 
 #ifdef __cplusplus
 }

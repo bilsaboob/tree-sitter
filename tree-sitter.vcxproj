@@ -18,37 +18,34 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\runtime\runtime.c" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{316AECBD-3265-4847-86D1-9D99314BD92D}</ProjectGuid>
+    <ProjectGuid>{2AA7FF76-1C83-4DF6-9F53-96A0E9AED1A0}</ProjectGuid>
     <RootNamespace>treesitter</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -72,22 +69,8 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\workspace_rsharp\tree-sitter\tree-sitter\externals\utf8proc;C:\workspace_rsharp\tree-sitter\tree-sitter\src;$(IncludePath)</IncludePath>
-    <OutDir>C:\workspace_rsharp\tree-sitter\tree-sitter\bin\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>C:\workspace_rsharp\tree-sitter\tree-sitter\obj\$(Platform)\$(Configuration)\</IntDir>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>C:\workspace_rsharp\tree-sitter\tree-sitter\bin\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>C:\workspace_rsharp\tree-sitter\tree-sitter\obj\$(Platform)\$(Configuration)\</IntDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>C:\workspace_rsharp\tree-sitter\tree-sitter\bin\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>C:\workspace_rsharp\tree-sitter\tree-sitter\obj\$(Platform)\$(Configuration)\</IntDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>C:\workspace_rsharp\tree-sitter\tree-sitter\bin\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>C:\workspace_rsharp\tree-sitter\tree-sitter\obj\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>bin\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -95,7 +78,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\workspace_rsharp\tree-sitter\tree-sitter\externals\utf8proc;C:\workspace_rsharp\tree-sitter\tree-sitter\include;C:\workspace_rsharp\tree-sitter\tree-sitter\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\workspace_zen\tree-sitter\src;C:\workspace_zen\tree-sitter\include;C:\workspace_zen\tree-sitter\externals\utf8proc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>UTF8PROC_EXPORTS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
@@ -105,8 +88,6 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\workspace_rsharp\tree-sitter\tree-sitter\externals\utf8proc;C:\workspace_rsharp\tree-sitter\tree-sitter\include;C:\workspace_rsharp\tree-sitter\tree-sitter\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>UTF8PROC_EXPORTS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -117,8 +98,6 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\workspace_rsharp\tree-sitter\tree-sitter\externals\utf8proc;C:\workspace_rsharp\tree-sitter\tree-sitter\include;C:\workspace_rsharp\tree-sitter\tree-sitter\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>UTF8PROC_EXPORTS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -133,14 +112,46 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\workspace_rsharp\tree-sitter\tree-sitter\externals\utf8proc;C:\workspace_rsharp\tree-sitter\tree-sitter\include;C:\workspace_rsharp\tree-sitter\tree-sitter\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>UTF8PROC_EXPORTS;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="include\tree_sitter\compiler.h" />
+    <ClInclude Include="include\tree_sitter\parser.h" />
+    <ClInclude Include="include\tree_sitter\runtime.h" />
+    <ClInclude Include="src\runtime\alloc.h" />
+    <ClInclude Include="src\runtime\array.h" />
+    <ClInclude Include="src\runtime\atomic.h" />
+    <ClInclude Include="src\runtime\error_costs.h" />
+    <ClInclude Include="src\runtime\get_changed_ranges.h" />
+    <ClInclude Include="src\runtime\language.h" />
+    <ClInclude Include="src\runtime\length.h" />
+    <ClInclude Include="src\runtime\lexer.h" />
+    <ClInclude Include="src\runtime\point.h" />
+    <ClInclude Include="src\runtime\reduce_action.h" />
+    <ClInclude Include="src\runtime\reusable_node.h" />
+    <ClInclude Include="src\runtime\stack.h" />
+    <ClInclude Include="src\runtime\subtree.h" />
+    <ClInclude Include="src\runtime\tree.h" />
+    <ClInclude Include="src\runtime\tree_cursor.h" />
+    <ClInclude Include="src\runtime\utf16.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\runtime\get_changed_ranges.c" />
+    <ClCompile Include="src\runtime\language.c" />
+    <ClCompile Include="src\runtime\lexer.c" />
+    <ClCompile Include="src\runtime\node.c" />
+    <ClCompile Include="src\runtime\parser.c" />
+    <ClCompile Include="src\runtime\runtime.c" />
+    <ClCompile Include="src\runtime\stack.c" />
+    <ClCompile Include="src\runtime\subtree.c" />
+    <ClCompile Include="src\runtime\tree.c" />
+    <ClCompile Include="src\runtime\tree_cursor.c" />
+    <ClCompile Include="src\runtime\utf16.c" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

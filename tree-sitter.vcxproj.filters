@@ -13,10 +13,105 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\runtime">
+      <UniqueIdentifier>{4bfffa70-2f61-414a-a0ed-e5e9f38d2f51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tree_sitter">
+      <UniqueIdentifier>{ad966683-70ba-4ff0-a8af-8ea595ef4187}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\tree_sitter\compiler.h">
+      <Filter>Source Files\tree_sitter</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tree_sitter\parser.h">
+      <Filter>Source Files\tree_sitter</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tree_sitter\runtime.h">
+      <Filter>Source Files\tree_sitter</Filter>
+    </ClInclude>
+    <ClInclude Include="src\runtime\alloc.h">
+      <Filter>Source Files\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="src\runtime\array.h">
+      <Filter>Source Files\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="src\runtime\atomic.h">
+      <Filter>Source Files\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="src\runtime\error_costs.h">
+      <Filter>Source Files\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="src\runtime\get_changed_ranges.h">
+      <Filter>Source Files\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="src\runtime\language.h">
+      <Filter>Source Files\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="src\runtime\length.h">
+      <Filter>Source Files\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="src\runtime\lexer.h">
+      <Filter>Source Files\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="src\runtime\point.h">
+      <Filter>Source Files\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="src\runtime\reduce_action.h">
+      <Filter>Source Files\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="src\runtime\reusable_node.h">
+      <Filter>Source Files\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="src\runtime\stack.h">
+      <Filter>Source Files\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="src\runtime\subtree.h">
+      <Filter>Source Files\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="src\runtime\tree.h">
+      <Filter>Source Files\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="src\runtime\tree_cursor.h">
+      <Filter>Source Files\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="src\runtime\utf16.h">
+      <Filter>Source Files\runtime</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\runtime\get_changed_ranges.c">
+      <Filter>Source Files\runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="src\runtime\language.c">
+      <Filter>Source Files\runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="src\runtime\lexer.c">
+      <Filter>Source Files\runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="src\runtime\node.c">
+      <Filter>Source Files\runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="src\runtime\parser.c">
+      <Filter>Source Files\runtime</Filter>
+    </ClCompile>
     <ClCompile Include="src\runtime\runtime.c">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="src\runtime\stack.c">
+      <Filter>Source Files\runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="src\runtime\subtree.c">
+      <Filter>Source Files\runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="src\runtime\tree.c">
+      <Filter>Source Files\runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="src\runtime\tree_cursor.c">
+      <Filter>Source Files\runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="src\runtime\utf16.c">
+      <Filter>Source Files\runtime</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
