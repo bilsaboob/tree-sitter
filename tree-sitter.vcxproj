@@ -71,6 +71,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>bin\$(Configuration)\</OutDir>
+    <IntDir>obj\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>bin\$(Configuration)\</OutDir>
+    <IntDir>obj\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -131,6 +136,7 @@
     <ClInclude Include="src\runtime\length.h" />
     <ClInclude Include="src\runtime\lexer.h" />
     <ClInclude Include="src\runtime\point.h" />
+    <ClInclude Include="src\runtime\ptree.h" />
     <ClInclude Include="src\runtime\reduce_action.h" />
     <ClInclude Include="src\runtime\reusable_node.h" />
     <ClInclude Include="src\runtime\stack.h" />
@@ -145,6 +151,7 @@
     <ClCompile Include="src\runtime\lexer.c" />
     <ClCompile Include="src\runtime\node.c" />
     <ClCompile Include="src\runtime\parser.c" />
+    <ClCompile Include="src\runtime\ptree.c" />
     <ClCompile Include="src\runtime\runtime.c" />
     <ClCompile Include="src\runtime\stack.c" />
     <ClCompile Include="src\runtime\subtree.c" />

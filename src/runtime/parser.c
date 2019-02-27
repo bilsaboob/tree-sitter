@@ -15,6 +15,7 @@
 #include "runtime/error_costs.h"
 #include "runtime/get_changed_ranges.h"
 #include "runtime/tree.h"
+#include "runtime/ptree.h"
 
 #define LOG(...)                                                                            \
   if (self->lexer.logger.log || self->dot_graph_file) {                                     \
@@ -1699,6 +1700,16 @@ TSTree *ts_parser_parse_string_encoding(TSParser *self, const TSTree *old_tree,
     ts_string_input_read,
     encoding,
   });
+}
+
+PTree* ts_parser_parse_string_as_ptree(TSParser *self, const TSTree *old_tree, const char *string, uint32_t length, bool debug) {
+  TSTree* tree = ts_parser_parse_string_encoding(self, old_tree, string, length, TSInputEncodingUTF8);
+  PTree* ptree = ts_ptree_build(tree, true);
+  ptree->str = NULL;
+  if (debug) {
+    ptree->str = ts_subtree_string(tree->root, tree->language, false);
+  }
+  return ptree;
 }
 
 #undef LOG

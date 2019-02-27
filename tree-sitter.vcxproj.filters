@@ -78,6 +78,9 @@
     <ClInclude Include="src\runtime\utf16.h">
       <Filter>Source Files\runtime</Filter>
     </ClInclude>
+    <ClInclude Include="src\runtime\ptree.h">
+      <Filter>Source Files\runtime</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\runtime\get_changed_ranges.c">
@@ -111,6 +114,9 @@
       <Filter>Source Files\runtime</Filter>
     </ClCompile>
     <ClCompile Include="src\runtime\utf16.c">
+      <Filter>Source Files\runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="src\runtime\ptree.c">
       <Filter>Source Files\runtime</Filter>
     </ClCompile>
   </ItemGroup>

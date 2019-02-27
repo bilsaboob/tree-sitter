@@ -17,9 +17,11 @@ extern "C" {
 #endif
 
 typedef uint16_t TSSymbol;
+typedef uint64_t PNode;
 typedef struct TSLanguage TSLanguage;
 typedef struct TSParser TSParser;
 typedef struct TSTree TSTree;
+typedef struct PTree PTree;
 
 typedef enum {
   TSInputEncodingUTF8,
@@ -91,6 +93,7 @@ TREE_SITTER_EXPORT void ts_parser_print_dot_graphs(TSParser *, FILE *);
 TREE_SITTER_EXPORT void ts_parser_halt_on_error(TSParser *, bool);
 TREE_SITTER_EXPORT TSTree *ts_parser_parse(TSParser *, const TSTree *, TSInput);
 TREE_SITTER_EXPORT TSTree *ts_parser_parse_string(TSParser *, const TSTree *, const char *, uint32_t);
+TREE_SITTER_EXPORT PTree* ts_parser_parse_string_as_ptree(TSParser *, const TSTree *, const char *, uint32_t, bool);
 TREE_SITTER_EXPORT TSTree *ts_parser_parse_string_encoding(TSParser *, const TSTree *, const char *, uint32_t, TSInputEncoding);
 TREE_SITTER_EXPORT bool ts_parser_enabled(const TSParser *);
 TREE_SITTER_EXPORT void ts_parser_set_enabled(TSParser *, bool);
@@ -107,6 +110,8 @@ TREE_SITTER_EXPORT void ts_tree_edit(TSTree *, const TSInputEdit *);
 TREE_SITTER_EXPORT TSRange *ts_tree_get_changed_ranges(const TSTree *, const TSTree *, uint32_t *);
 TREE_SITTER_EXPORT void ts_tree_print_dot_graph(const TSTree *, FILE *);
 TREE_SITTER_EXPORT const TSLanguage *ts_tree_language(const TSTree *);
+
+TREE_SITTER_EXPORT void ts_ptree_delete(PTree *);
 
 TREE_SITTER_EXPORT uint32_t ts_node_start_byte(TSNode);
 TREE_SITTER_EXPORT TSPoint ts_node_start_point(TSNode);
