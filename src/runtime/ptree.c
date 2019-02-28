@@ -19,14 +19,14 @@ const uint64_t PNODE_ERROR_UNEXPECTED = 2;
 const uint64_t TT_BAD_TOKEN = 255;
 
 #define PNODE_START_RULE_NODE(node, index, type)                              \
-  (node[index] = (PNode)((((type)&0xFF) << 4) | (((PNODE_START)&0x1) << 3) | \
+  (node[index] = (PNode)(((((uint64_t)index) & 0xFFFFFF) << 36) | (((type)&0xFF) << 4) | (((PNODE_START)&0x1) << 3) | \
                    (((PNODE_RULE_NODE_TYPE)&0x7))))
 
 #define PNODE_START_RULE_NODE_LENGTH(node, index, length) \
-  (node[index] = (PNode)((((((uint64_t)length) & 0xFF) << 12) | (uint64_t)node[index])))
+  (node[index] = (PNode)((((((uint64_t)length) & 0xFFFFFF) << 12) | (uint64_t)node[index])))
 
 #define PNODE_END_RULE_NODE(node, index, type, length)                     \
-  (node[index] = (PNode)(((((uint64_t)length)&0xFF) << 12) | (((type)&0xFF) << 4) | \
+  (node[index] = (PNode)(((((uint64_t)index) & 0xFFFFFF) << 36) | ((((uint64_t)length)&0xFF) << 12) | (((type)&0xFF) << 4) | \
                    (((PNODE_END)&0x1) << 3) | (((PNODE_RULE_NODE_TYPE)&0x7))))
 
 #define PNODE_TOKEN_NODE(node, index, input_start_index, type, length)         \
