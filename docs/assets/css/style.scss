@@ -116,3 +116,52 @@ body {
     }
   }
 }
+
+#playground-container {
+  .CodeMirror {
+    height: auto;
+    max-height: 350px;
+    border: 1px solid #aaa;
+  }
+
+  .CodeMirror-scroll {
+    height: auto;
+    max-height: 350px;
+  }
+
+  h4, select, .field, label {
+    display: inline-block;
+    margin-right: 20px;
+  }
+
+  #logging-checkbox {
+    height: 15px;
+  }
+
+  .CodeMirror div.CodeMirror-cursor {
+    border-left: 3px solid red;
+  }
+}
+
+#output-container {
+  padding: 0 10px;
+  margin: 0;
+}
+
+#output-container-scroll {
+  padding: 0;
+  position: relative;
+  margin-top: 0;
+  overflow: auto;
+  max-height: 350px;
+  border: 1px solid #aaa;
+}
+
+a.highlighted {
+  background-color: #ddd;
+  text-decoration: underline;
+}
+
+.query-error {
+  text-decoration: underline red dashed;
+}

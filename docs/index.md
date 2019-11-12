@@ -15,10 +15,12 @@ Tree-sitter is a parser generator tool and an incremental parsing library. It ca
 
 There are currently bindings that allow Tree-sitter to be used from the following languages:
 
-* [JavaScript](https://github.com/tree-sitter/node-tree-sitter)
-* [Rust](https://github.com/tree-sitter/rust-tree-sitter)
-* [Haskell](https://github.com/tree-sitter/haskell-tree-sitter)
+* [Rust](https://github.com/tree-sitter/tree-sitter/tree/master/lib/binding_rust)
+* [JavaScript (Wasm)](https://github.com/tree-sitter/tree-sitter/tree/master/lib/binding_web)
+* [JavaScript (Node.js)](https://github.com/tree-sitter/node-tree-sitter)
+* [Python](https://github.com/tree-sitter/py-tree-sitter)
 * [Ruby](https://github.com/tree-sitter/ruby-tree-sitter)
+* [Haskell](https://github.com/tree-sitter/haskell-tree-sitter)
 
 ### Available Parsers
 
@@ -28,28 +30,40 @@ Parsers for these languages are fairly complete:
 * [C](https://github.com/tree-sitter/tree-sitter-c)
 * [C++](https://github.com/tree-sitter/tree-sitter-cpp)
 * [CSS](https://github.com/tree-sitter/tree-sitter-css)
+* [Elm](https://github.com/razzeee/tree-sitter-elm)
+* [Eno](https://github.com/eno-lang/tree-sitter-eno)
 * [ERB / EJS](https://github.com/tree-sitter/tree-sitter-embedded-template)
 * [Go](https://github.com/tree-sitter/tree-sitter-go)
 * [HTML](https://github.com/tree-sitter/tree-sitter-html)
+* [Java](https://github.com/tree-sitter/tree-sitter-java)
 * [JavaScript](https://github.com/tree-sitter/tree-sitter-javascript)
+* [Lua](https://github.com/Azganoth/tree-sitter-lua)
+* [Markdown](https://github.com/ikatyang/tree-sitter-markdown)
 * [OCaml](https://github.com/tree-sitter/tree-sitter-ocaml)
 * [PHP](https://github.com/tree-sitter/tree-sitter-php)
 * [Python](https://github.com/tree-sitter/tree-sitter-python)
 * [Ruby](https://github.com/tree-sitter/tree-sitter-ruby)
 * [Rust](https://github.com/tree-sitter/tree-sitter-rust)
+* [SystemRDL](https://github.com/SystemRDL/tree-sitter-systemrdl)
+* [TOML](https://github.com/ikatyang/tree-sitter-toml)
 * [TypeScript](https://github.com/tree-sitter/tree-sitter-typescript)
+* [Verilog](https://github.com/tree-sitter/tree-sitter-verilog)
+* [Vue](https://github.com/ikatyang/tree-sitter-vue)
+* [YAML](https://github.com/ikatyang/tree-sitter-yaml)
 
 Parsers for these languages are in development:
 
 * [Agda](https://github.com/tree-sitter/tree-sitter-agda)
 * [C-sharp](https://github.com/tree-sitter/tree-sitter-c-sharp)
 * [Haskell](https://github.com/tree-sitter/tree-sitter-haskell)
-* [Java](https://github.com/tree-sitter/tree-sitter-java)
 * [Julia](https://github.com/tree-sitter/tree-sitter-julia)
+* [Nix](https://github.com/cstrahan/tree-sitter-nix)
 * [Scala](https://github.com/tree-sitter/tree-sitter-scala)
+* [Swift](https://github.com/tree-sitter/tree-sitter-swift)
 
 ### Talks on Tree-sitter
 
+* [Strange Loop 2018](https://www.thestrangeloop.com/2018/tree-sitter---a-new-parsing-system-for-programming-tools.html)
 * [FOSDEM 2018](https://www.youtube.com/watch?v=0CGzC_iss-8)
 * [GitHub Universe 2017](https://www.youtube.com/watch?v=a1rC79DHpmY)
 
