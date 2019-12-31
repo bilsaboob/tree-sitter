@@ -35,7 +35,8 @@ const NEW_HEADER_PARTS: [&'static str; 2] = [
     "
   uint32_t large_state_count;
   const uint16_t *small_parse_table;
-  const uint32_t *small_parse_table_map;",
+  const uint32_t *small_parse_table_map;
+  const TSSymbol *public_symbol_map;",
     "
 #define SMALL_STATE(id) id - LARGE_STATE_COUNT
 ",
@@ -149,7 +150,8 @@ fn generate_parser_for_grammar_with_opts(
     next_abi: bool,
     report_symbol_name: Option<&str>,
 ) -> Result<GeneratedParser> {
-    let variable_info = node_types::get_variable_info(&syntax_grammar, &lexical_grammar)?;
+    let variable_info =
+        node_types::get_variable_info(&syntax_grammar, &lexical_grammar, &simple_aliases)?;
     let node_types_json = node_types::generate_node_types_json(
         &syntax_grammar,
         &lexical_grammar,

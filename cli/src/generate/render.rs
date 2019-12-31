@@ -80,6 +80,11 @@ impl Generator {
         self.add_stats();
         self.add_symbol_enum();
         self.add_symbol_names_list();
+
+        if self.next_abi {
+            self.add_unique_symbol_map();
+        }
+
         self.add_symbol_metadata_list();
 
         if !self.field_names.is_empty() {
@@ -130,11 +135,7 @@ impl Generator {
 
             for alias in &production_info.alias_sequence {
                 if let Some(alias) = &alias {
-                    let alias_kind = if alias.is_named {
-                        VariableType::Named
-                    } else {
-                        VariableType::Anonymous
-                    };
+                    let alias_kind = alias.kind();
                     let matching_symbol = self.parse_table.symbols.iter().cloned().find(|symbol| {
                         let (name, kind) = self.metadata_for_symbol(*symbol);
                         name == alias.value && kind == alias_kind
@@ -320,6 +321,58 @@ impl Generator {
         add_line!(self, "");
     }
 
+    fn add_unique_symbol_map(&mut self) {
+        add_line!(self, "static TSSymbol ts_symbol_map[] = {{");
+        indent!(self);
+        for symbol in &self.parse_table.symbols {
+            let mut mapping = symbol;
+
+            // If this symbol has a simple alias, then check if its alias has the same
+            // name and kind (e.g. named vs anonymous) as some other symbol in the grammar.
+            // If so, add an entry to the symbol map that deduplicates these two symbols,
+            // so that only one of them will ever be returned via the public API.
+            if let Some(alias) = self.simple_aliases.get(symbol) {
+                let kind = alias.kind();
+                for other_symbol in &self.parse_table.symbols {
+                    if other_symbol == symbol {
+                        continue;
+                    }
+                    if let Some(other_alias) = self.simple_aliases.get(other_symbol) {
+                        if other_symbol < symbol && other_alias == alias {
+                            mapping = other_symbol;
+                            break;
+                        }
+                    } else if self.metadata_for_symbol(*other_symbol) == (&alias.value, kind) {
+                        mapping = other_symbol;
+                        break;
+                    }
+                }
+            }
+
+            add_line!(
+                self,
+                "[{}] = {},",
+                self.symbol_ids[&symbol],
+                self.symbol_ids[&mapping],
+            );
+        }
+
+        for (alias, symbol) in &self.alias_map {
+            if symbol.is_none() {
+                add_line!(
+                    self,
+                    "[{}] = {},",
+                    self.alias_ids[&alias],
+                    self.alias_ids[&alias],
+                );
+            }
+        }
+
+        dedent!(self);
+        add_line!(self, "}};");
+        add_line!(self, "");
+    }
+
     fn add_field_name_enum(&mut self) {
         add_line!(self, "enum {{");
         indent!(self);
@@ -463,7 +516,8 @@ impl Generator {
 
         add_line!(
             self,
-            "static const TSFieldMapSlice ts_field_map_slices[] = {{",
+            "static const TSFieldMapSlice ts_field_map_slices[{}] = {{",
+            self.parse_table.production_infos.len(),
         );
         indent!(self);
         for (production_id, (row_id, length)) in field_map_ids.into_iter().enumerate() {
@@ -1072,6 +1126,10 @@ impl Generator {
         add_line!(self, ".lex_modes = ts_lex_modes,");
         add_line!(self, ".symbol_names = ts_symbol_names,");
 
+        if self.next_abi {
+            add_line!(self, ".public_symbol_map = ts_symbol_map,");
+        }
+
         if !self.parse_table.production_infos.is_empty() {
             add_line!(
                 self,
@@ -1282,9 +1340,10 @@ impl Generator {
             match c {
                 '\"' => result += "\\\"",
                 '\\' => result += "\\\\",
-                '\t' => result += "\\t",
+                '\u{000c}' => result += "\\f",
                 '\n' => result += "\\n",
                 '\r' => result += "\\r",
+                '\t' => result += "\\t",
                 _ => result.push(c),
             }
         }
@@ -1292,18 +1351,20 @@ impl Generator {
     }
 
     fn add_character(&mut self, c: char) {
-        if c.is_ascii() {
-            match c {
-                '\0' => add!(self, "0"),
-                '\'' => add!(self, "'\\''"),
-                '\\' => add!(self, "'\\\\'"),
-                '\t' => add!(self, "'\\t'"),
-                '\n' => add!(self, "'\\n'"),
-                '\r' => add!(self, "'\\r'"),
-                _ => add!(self, "'{}'", c),
+        match c {
+            '\'' => add!(self, "'\\''"),
+            '\\' => add!(self, "'\\\\'"),
+            '\u{000c}' => add!(self, "'\\f'"),
+            '\n' => add!(self, "'\\n'"),
+            '\t' => add!(self, "'\\t'"),
+            '\r' => add!(self, "'\\r'"),
+            _ => {
+                if c == ' ' || c.is_ascii_graphic() {
+                    add!(self, "'{}'", c)
+                } else {
+                    add!(self, "{}", c as u32)
+                }
             }
-        } else {
-            add!(self, "{}", c as u32)
         }
     }
 }

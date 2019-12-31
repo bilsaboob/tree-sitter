@@ -1,11 +1,13 @@
 use clap::{App, AppSettings, Arg, SubCommand};
 use error::Error;
+use glob::glob;
 use std::path::Path;
 use std::process::exit;
 use std::{env, fs, u64};
 use tree_sitter::Language;
 use tree_sitter_cli::{
-    config, error, generate, highlight, loader, logger, parse, query, test, wasm, web_ui,
+    config, error, generate, highlight, loader, logger, parse, query, test, test_highlight, wasm,
+    web_ui,
 };
 
 const BUILD_VERSION: &'static str = env!("CARGO_PKG_VERSION");
@@ -39,7 +41,7 @@ fn run() -> error::Result<()> {
                 .about("Generate a parser")
                 .arg(Arg::with_name("grammar-path").index(1))
                 .arg(Arg::with_name("log").long("log"))
-                .arg(Arg::with_name("next-abi").long("next-abi"))
+                .arg(Arg::with_name("prev-abi").long("prev-abi"))
                 .arg(
                     Arg::with_name("report-states-for-rule")
                         .long("report-states-for-rule")
@@ -151,28 +153,39 @@ fn run() -> error::Result<()> {
         if matches.is_present("log") {
             logger::init();
         }
-        let next_abi = matches.is_present("next-abi");
+        let prev_abi = matches.is_present("prev-abi");
         generate::generate_parser_in_directory(
             &current_dir,
             grammar_path,
-            next_abi,
+            !prev_abi,
             report_symbol_name,
         )?;
     } else if let Some(matches) = matches.subcommand_matches("test") {
         let debug = matches.is_present("debug");
         let debug_graph = matches.is_present("debug-graph");
         let filter = matches.value_of("filter");
-        if let Some(language) = loader.languages_at_path(&current_dir)?.first() {
-            test::run_tests_at_path(
-                *language,
-                &current_dir.join("corpus"),
-                debug,
-                debug_graph,
-                filter,
-            )?;
-            test::check_queries_at_path(*language, &current_dir.join("queries"))?;
-        } else {
-            eprintln!("No language found");
+        let languages = loader.languages_at_path(&current_dir)?;
+        let language = languages
+            .first()
+            .ok_or_else(|| "No language found".to_string())?;
+        let test_dir = current_dir.join("test");
+
+        // Run the corpus tests. Look for them at two paths: `test/corpus` and `corpus`.
+        let mut test_corpus_dir = test_dir.join("corpus");
+        if !test_corpus_dir.is_dir() {
+            test_corpus_dir = current_dir.join("corpus");
+        }
+        if test_corpus_dir.is_dir() {
+            test::run_tests_at_path(*language, &test_corpus_dir, debug, debug_graph, filter)?;
+        }
+
+        // Check that all of the queries are valid.
+        test::check_queries_at_path(*language, &current_dir.join("queries"))?;
+
+        // Run the syntax highlighting tests.
+        let test_highlight_dir = test_dir.join("highlight");
+        if test_highlight_dir.is_dir() {
+            test_highlight::test_highlights(&loader, &test_highlight_dir)?;
         }
     } else if let Some(matches) = matches.subcommand_matches("parse") {
         let debug = matches.is_present("debug");
@@ -186,16 +199,12 @@ fn run() -> error::Result<()> {
         let timeout = matches
             .value_of("timeout")
             .map_or(0, |t| u64::from_str_radix(t, 10).unwrap());
-        let paths = matches
-            .values_of("path")
-            .unwrap()
-            .into_iter()
-            .collect::<Vec<_>>();
+        let paths = collect_paths(matches.values_of("path").unwrap())?;
         let max_path_length = paths.iter().map(|p| p.chars().count()).max().unwrap();
         let mut has_error = false;
         loader.find_all_languages(&config.parser_directories)?;
         for path in paths {
-            let path = Path::new(path);
+            let path = Path::new(&path);
             let language =
                 select_language(&mut loader, path, &current_dir, matches.value_of("scope"))?;
             has_error |= parse::parse_file_at_path(
@@ -232,11 +241,12 @@ fn run() -> error::Result<()> {
         let query_path = Path::new(matches.value_of("query-path").unwrap());
         query::query_files_at_paths(language, paths, query_path, ordered_captures)?;
     } else if let Some(matches) = matches.subcommand_matches("highlight") {
-        let paths = matches.values_of("path").unwrap().into_iter();
-        let html_mode = matches.is_present("html");
-        let time = matches.is_present("time");
+        loader.configure_highlights(&config.theme.highlight_names);
         loader.find_all_languages(&config.parser_directories)?;
 
+        let time = matches.is_present("time");
+        let paths = collect_paths(matches.values_of("path").unwrap())?;
+        let html_mode = matches.is_present("html");
         if html_mode {
             println!("{}", highlight::HTML_HEADER);
         }
@@ -252,7 +262,7 @@ fn run() -> error::Result<()> {
         }
 
         for path in paths {
-            let path = Path::new(path);
+            let path = Path::new(&path);
             let (language, language_config) = match language_config {
                 Some(v) => v,
                 None => match loader.language_configuration_for_file_name(path)? {
@@ -266,9 +276,7 @@ fn run() -> error::Result<()> {
 
             let source = fs::read(path)?;
 
-            if let Some(highlight_config) =
-                language_config.highlight_config(&config.theme.highlighter, language)?
-            {
+            if let Some(highlight_config) = language_config.highlight_config(language)? {
                 if html_mode {
                     highlight::html(&loader, &config.theme, &source, highlight_config, time)?;
                 } else {
@@ -306,6 +314,39 @@ fn run() -> error::Result<()> {
     }
 
     Ok(())
+}
+
+fn collect_paths<'a>(paths: impl Iterator<Item = &'a str>) -> error::Result<Vec<String>> {
+    let mut result = Vec::new();
+
+    let mut incorporate_path = |path: &str, positive| {
+        if positive {
+            result.push(path.to_string());
+        } else {
+            if let Some(index) = result.iter().position(|p| p == path) {
+                result.remove(index);
+            }
+        }
+    };
+
+    for mut path in paths {
+        let mut positive = true;
+        if path.starts_with("!") {
+            positive = false;
+            path = path.trim_start_matches("!");
+        }
+
+        if Path::new(path).exists() {
+            incorporate_path(path, positive);
+        } else {
+            for path in glob(path)? {
+                if let Some(path) = path?.to_str() {
+                    incorporate_path(path, positive);
+                }
+            }
+        }
+    }
+    Ok(result)
 }
 
 fn select_language(

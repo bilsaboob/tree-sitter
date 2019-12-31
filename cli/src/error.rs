@@ -1,3 +1,4 @@
+use super::test_highlight;
 use std::fmt::Write;
 use std::io;
 use tree_sitter::QueryError;
@@ -92,9 +93,27 @@ impl From<io::Error> for Error {
     }
 }
 
+impl From<glob::PatternError> for Error {
+    fn from(error: glob::PatternError) -> Self {
+        Error::new(error.to_string())
+    }
+}
+
+impl From<glob::GlobError> for Error {
+    fn from(error: glob::GlobError) -> Self {
+        Error::new(error.to_string())
+    }
+}
+
 impl From<regex_syntax::ast::Error> for Error {
     fn from(error: regex_syntax::ast::Error) -> Self {
         Error::new(error.to_string())
+    }
+}
+
+impl From<test_highlight::Failure> for Error {
+    fn from(error: test_highlight::Failure) -> Self {
+        Error::new(error.message())
     }
 }
 
